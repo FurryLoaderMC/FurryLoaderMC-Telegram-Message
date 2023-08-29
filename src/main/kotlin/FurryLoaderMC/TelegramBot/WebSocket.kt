@@ -7,7 +7,6 @@ import io.ktor.server.netty.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
-import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -22,12 +21,8 @@ class WebSocket {
         install(Routing) {
             webSocket("/chat") {
                 onConnect()
-                try {
-                    onMessage()
-                }
-                catch (e:ClosedReceiveChannelException) {
-                    onClose()
-                }
+                onMessage()
+                onClose()
             }
         }
     }
@@ -35,15 +30,16 @@ class WebSocket {
 
     private fun DefaultWebSocketSession.onConnect() {
         this@WebSocket.sessions.add(this)
-        val message = Utils.furryLoaderMessage("WebSocket有新的连接")
-        instance.server.sendMessage(message)
+        val message = Utils.furryLoaderMessage("Telegram Bot 已连接 WebSocket 服务器")
+        instance.logger.info(Utils.componentToString(message))
     }
 
 
-    private fun DefaultWebSocketSession.onClose() {
+    private suspend fun DefaultWebSocketSession.onClose() {
+        this.closeReason.await()
         this@WebSocket.sessions.remove(this)
-        val message = Utils.furryLoaderMessage("WebSocket有断的连接")
-        instance.server.sendMessage(message)
+        val message = Utils.furryLoaderMessage("Telegram Bot 已断开 WebSocket 服务器")
+        instance.logger.info(Utils.componentToString(message))
     }
 
 
