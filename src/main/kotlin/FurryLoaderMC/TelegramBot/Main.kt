@@ -12,8 +12,14 @@ class Main : JavaPlugin() {
         lateinit var webSocket: WebSocket
 
 
-        fun sendMessageToGame(telegram: String, minecraft: String, message: String) {
-            val content = Utils.furryLoaderMessage(telegram, minecraft, message)
+        fun sendMessageToGame(
+            telegram: String,
+            minecraft: String,
+            message: String,
+            telegram_id: Long,
+            message_id: Long
+        ) {
+            val content = Utils.furryLoaderMessage(telegram, minecraft, message, telegram_id, message_id)
             this.instance.server.sendMessage(content)
         }
 
@@ -30,7 +36,6 @@ class Main : JavaPlugin() {
     }
 
 
-
     override fun onLoad() {
         instance = this
         webSocket = WebSocket()
@@ -39,6 +44,8 @@ class Main : JavaPlugin() {
 
     override fun onEnable() {
         webSocket.start()
+        getCommand("telegram")?.setExecutor(CommandExecutor())
+        getCommand("telegram")?.tabCompleter = TabCompleter()
         Bukkit.getPluginManager().registerEvents(EventListener(), this)
     }
 
