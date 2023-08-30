@@ -7,15 +7,11 @@ import net.kyori.adventure.text.format.NamedTextColor
 
 object Utils {
 
-    fun furryLoaderMessage(content: Component): Component {
+    fun furryLoaderMessage(telegram: String, minecraft: String, message: String): Component {
         val header = Component.text("[FurryLoader] ").color(NamedTextColor.GREEN)
-        return header.append(content.color(NamedTextColor.WHITE))
-    }
-
-
-    fun furryLoaderMessage(content: String): Component {
-        val header = Component.text("[FurryLoader] ").color(NamedTextColor.GREEN)
-        return header.append(Component.text(content).color(NamedTextColor.WHITE))
+        val name = Component.text("<${telegram}>(${minecraft}) ").color(NamedTextColor.YELLOW)
+        val content = Component.text(message).color(NamedTextColor.WHITE)
+        return Component.text("").append(header).append(name).append(content)
     }
 
 
