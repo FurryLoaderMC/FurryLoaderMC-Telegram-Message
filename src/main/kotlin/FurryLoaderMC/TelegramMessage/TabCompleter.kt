@@ -1,4 +1,4 @@
-package FurryLoaderMC.TelegramBot
+package FurryLoaderMC.TelegramMessage
 
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender

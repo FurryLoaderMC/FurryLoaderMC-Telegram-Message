@@ -1,7 +1,7 @@
-name: Telegram-Bot
+name: Telegram-Message
 version: 0.1.0
-main: FurryLoaderMC.TelegramBot.Main
-description: FurryLoaderMC - Telegram Bot
+main: FurryLoaderMC.TelegramMessage.Main
+description: FurryLoaderMC - Telegram Message
 author: FurryLoaderMC
 api-version: "1.20"
 commands:

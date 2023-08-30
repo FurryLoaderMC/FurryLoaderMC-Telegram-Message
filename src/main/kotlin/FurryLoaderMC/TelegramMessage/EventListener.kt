@@ -1,4 +1,4 @@
-package FurryLoaderMC.TelegramBot
+package FurryLoaderMC.TelegramMessage
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

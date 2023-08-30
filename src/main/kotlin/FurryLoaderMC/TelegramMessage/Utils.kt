@@ -1,4 +1,4 @@
-package FurryLoaderMC.TelegramBot
+package FurryLoaderMC.TelegramMessage
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.JoinConfiguration

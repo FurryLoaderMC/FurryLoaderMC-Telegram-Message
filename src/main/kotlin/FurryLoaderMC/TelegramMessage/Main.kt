@@ -1,4 +1,4 @@
-package FurryLoaderMC.TelegramBot
+package FurryLoaderMC.TelegramMessage
 
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin

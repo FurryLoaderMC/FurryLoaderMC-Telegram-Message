@@ -1,4 +1,4 @@
-package FurryLoaderMC.TelegramBot
+package FurryLoaderMC.TelegramMessage
 
 import io.ktor.server.application.*
 import io.ktor.server.engine.*

@@ -1,4 +1,4 @@
-package FurryLoaderMC.TelegramBot
+package FurryLoaderMC.TelegramMessage
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

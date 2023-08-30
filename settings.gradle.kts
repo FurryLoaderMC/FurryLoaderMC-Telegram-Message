@@ -1,4 +1,4 @@
-rootProject.name = "Telegram-Bot"
+rootProject.name = "Telegram-Message"
 
 
 plugins {
