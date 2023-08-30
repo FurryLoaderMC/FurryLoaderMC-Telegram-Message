@@ -1,10 +1,7 @@
 package FurryLoaderMC.TelegramBot
 
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.*
 
 
 class BotAction {
@@ -29,7 +26,9 @@ class BotAction {
         val telegram = json.jsonObject["telegram"]?.jsonPrimitive?.content ?: return
         val minecraft = json.jsonObject["minecraft"]?.jsonPrimitive?.content ?: return
         val message = json.jsonObject["message"]?.jsonPrimitive?.content ?: return
-        Main.sendMessageToGame(telegram, minecraft, message)
+        val telegramId = json.jsonObject["telegram_id"]?.jsonPrimitive?.long ?: return
+        val messageId = json.jsonObject["message_id"]?.jsonPrimitive?.long ?: return
+        Main.sendMessageToGame(telegram, minecraft, message, telegramId, messageId)
     }
 
 
@@ -46,8 +45,8 @@ class BotAction {
             channel,
             event,
             OnlinePlayers(
-                players.size,
-                Main.instance.server.maxPlayers,
+                players.size.toLong(),
+                Main.instance.server.maxPlayers.toLong(),
                 players
             )
         )

@@ -18,11 +18,13 @@ class EventListener: Listener {
             "message",
             "join",
             Message(
+                "send",
                 Player(
                     event.player.name,
                     event.player.uniqueId.toString()
                 ),
-                Utils.componentToString(event.joinMessage() ?: return)
+                Utils.componentToString(event.joinMessage() ?: return),
+                null
             )
         )
         Main.sendMessageToBot(Json.encodeToString(sendData))
@@ -34,11 +36,13 @@ class EventListener: Listener {
             "message",
             "quit",
             Message(
+                "send",
                 Player(
                     event.player.name,
                     event.player.uniqueId.toString()
                 ),
-                Utils.componentToString(event.quitMessage() ?: return)
+                Utils.componentToString(event.quitMessage() ?: return),
+                null
             )
         )
         Main.sendMessageToBot(Json.encodeToString(sendData))
@@ -50,11 +54,13 @@ class EventListener: Listener {
             "message",
             "death",
             Message(
+                "send",
                 Player(
                     event.player.name,
                     event.player.uniqueId.toString()
                 ),
-                Utils.componentToString(event.deathMessage() ?: return)
+                Utils.componentToString(event.deathMessage() ?: return),
+                null
             )
         )
         Main.sendMessageToBot(Json.encodeToString(sendData))
@@ -66,11 +72,13 @@ class EventListener: Listener {
             "message",
             "chat",
             Message(
+                "send",
                 Player(
                     event.player.name,
                     event.player.uniqueId.toString()
                 ),
-                Utils.componentToString(event.originalMessage())
+                Utils.componentToString(event.originalMessage()),
+                null
             )
         )
         Main.sendMessageToBot(Json.encodeToString(sendData))
@@ -82,11 +90,13 @@ class EventListener: Listener {
             "message",
             "advancement",
             Message(
+                "send",
                 Player(
                     event.player.name,
                     event.player.uniqueId.toString()
                 ),
-                Utils.componentToString(event.message() ?: return)
+                Utils.componentToString(event.message() ?: return),
+                null
             )
         )
         Main.sendMessageToBot(Json.encodeToString(sendData))
