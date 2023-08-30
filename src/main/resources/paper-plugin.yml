@@ -1,6 +1,0 @@
-name: Telegram-Bot
-version: 0.1.0
-main: FurryLoaderMC.TelegramBot.Main
-description: FurryLoaderMC - Telegram Bot
-author: FurryLoaderMC
-api-version: "1.20"

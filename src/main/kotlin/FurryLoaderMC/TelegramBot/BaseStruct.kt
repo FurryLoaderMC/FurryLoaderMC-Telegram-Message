@@ -14,21 +14,23 @@ data class SendData<Type>(
 
 @Serializable
 data class Player(
-     @SerialName("name") val name: String,
-     @SerialName("uuid") val uuid: String
+    @SerialName("name") val name: String,
+    @SerialName("uuid") val uuid: String
 )
 
 
 @Serializable
 data class Message(
-     @SerialName("player") val player: Player,
-     @SerialName("message") val message: String,
+    @SerialName("action") val action: String,
+    @SerialName("player") val player: Player,
+    @SerialName("message") val message: String,
+    @SerialName("id") val id: Long?
 )
 
 
 @Serializable
 data class OnlinePlayers(
-     @SerialName("current") val current: Int,
-     @SerialName("maximum") val maximum: Int,
-     @SerialName("players") val players: MutableList<Player>
+    @SerialName("current") val current: Long,
+    @SerialName("maximum") val maximum: Long,
+    @SerialName("players") val players: MutableList<Player>
 )
