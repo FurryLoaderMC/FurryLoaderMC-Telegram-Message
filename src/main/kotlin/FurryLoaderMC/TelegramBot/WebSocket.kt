@@ -1,6 +1,5 @@
 package FurryLoaderMC.TelegramBot
 
-import FurryLoaderMC.TelegramBot.Main.Companion.instance
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -14,12 +13,12 @@ import kotlinx.coroutines.runBlocking
 
 class WebSocket {
 
-    private val sessions = ArrayList<DefaultWebSocketSession>()
-
+    private val botAction = BotAction()
+    private val sessions = mutableListOf<DefaultWebSocketSession>()
     private val server = embeddedServer(Netty, port = 4321) {
         install(WebSockets)
         install(Routing) {
-            webSocket("/chat") {
+            webSocket {
                 onConnect()
                 onMessage()
                 onClose()
@@ -30,30 +29,27 @@ class WebSocket {
 
     private fun DefaultWebSocketSession.onConnect() {
         this@WebSocket.sessions.add(this)
-        val message = Utils.furryLoaderMessage("Telegram Bot 已连接 WebSocket 服务器")
-        instance.logger.info(Utils.componentToString(message))
+        Main.outputLoggerInfo("Telegram Bot 已连接 WebSocket 服务器")
     }
 
 
     private suspend fun DefaultWebSocketSession.onClose() {
         this.closeReason.await()
         this@WebSocket.sessions.remove(this)
-        val message = Utils.furryLoaderMessage("Telegram Bot 已断开 WebSocket 服务器")
-        instance.logger.info(Utils.componentToString(message))
+        Main.outputLoggerInfo("Telegram Bot 已断开 WebSocket 服务器")
     }
 
 
     private suspend fun DefaultWebSocketSession.onMessage() {
         this.incoming.consumeEach {
             if (it is Frame.Text) {
-                val message = Utils.furryLoaderMessage(it.readText())
-                instance.server.sendMessage(message)
+                this@WebSocket.botAction.onMessage(it.readText())
             }
         }
     }
 
 
-    fun send(content: String) = runBlocking {
+    fun sendMessage(content: String) = runBlocking {
         launch {
             this@WebSocket.sessions.forEach {
                 it.send(content)
