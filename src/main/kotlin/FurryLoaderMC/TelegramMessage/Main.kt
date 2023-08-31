@@ -10,22 +10,16 @@ class Main : JavaPlugin() {
 
         lateinit var instance: JavaPlugin
         lateinit var webSocket: WebSocket
+        lateinit var furryLoaderMessage: FurryLoaderMessage
 
 
-        fun sendMessageToGame(
-            telegram: String,
-            minecraft: String,
-            message: String,
-            telegram_id: Long,
-            message_id: Long
-        ) {
-            val content = Utils.furryLoaderMessage(telegram, minecraft, message, telegram_id, message_id)
-            this.instance.server.sendMessage(content)
+        fun sendMessageToGame(sender: Sender, message: Message) {
+            this.furryLoaderMessage.sendMessage(sender, message)
         }
 
 
-        fun sendMessageToBot(message: String) {
-            this.webSocket.sendMessage(message)
+        fun sendMessageToBot(data: Data) {
+            this.webSocket.sendMessage(data)
         }
 
 
@@ -39,6 +33,7 @@ class Main : JavaPlugin() {
     override fun onLoad() {
         instance = this
         webSocket = WebSocket()
+        furryLoaderMessage = FurryLoaderMessage()
     }
 
 

@@ -9,6 +9,8 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 
 class WebSocket {
@@ -16,6 +18,11 @@ class WebSocket {
     private val botAction = BotAction()
     private val sessions = mutableListOf<DefaultWebSocketSession>()
     private val server = embeddedServer(Netty, port = 4321) {
+        initWebSocket()
+    }
+
+
+    private fun Application.initWebSocket() {
         install(WebSockets)
         install(Routing) {
             webSocket {
@@ -49,10 +56,10 @@ class WebSocket {
     }
 
 
-    fun sendMessage(content: String) = runBlocking {
+    fun sendMessage(data: Data) = runBlocking {
         launch {
             this@WebSocket.sessions.forEach {
-                it.send(content)
+                it.send(Json.encodeToString(data))
             }
         }
     }

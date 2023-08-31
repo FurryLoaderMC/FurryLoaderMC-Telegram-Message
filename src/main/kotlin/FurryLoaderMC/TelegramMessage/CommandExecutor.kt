@@ -1,7 +1,7 @@
 package FurryLoaderMC.TelegramMessage
 
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.encodeToJsonElement
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.JoinConfiguration
 import net.kyori.adventure.text.format.NamedTextColor
@@ -12,12 +12,7 @@ import org.bukkit.command.CommandSender
 
 class CommandExecutor : CommandExecutor {
 
-    override fun onCommand(
-        sender: CommandSender,
-        command: Command,
-        label: String,
-        args: Array<out String>
-    ): Boolean {
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (args.isEmpty()) {
             return this.help(sender)
         }
@@ -87,21 +82,24 @@ class CommandExecutor : CommandExecutor {
             return true
         }
 
-        val sendData = SendData(
+        Main.sendMessageToBot(Data(
             "message",
             "chat",
-            Message(
-                "send",
-                Player(
+            Json.encodeToJsonElement(Chat(
+                Json.encodeToJsonElement(Player(
                     sender.name,
                     Main.instance.server.getPlayerUniqueId(sender.name).toString()
-                ),
-                args.drop(2).joinToString(" "),
-                null
-            )
-        )
-
-        Main.sendMessageToBot(Json.encodeToString(sendData))
+                )),
+                Message(
+                    null,
+                    listOf(Content(
+                        "text",
+                        null,
+                        args[1],
+                    ))
+                )
+            ))
+        ))
 
         return true
     }
@@ -113,21 +111,31 @@ class CommandExecutor : CommandExecutor {
             return true
         }
 
-        val sendData = SendData(
+        Main.sendMessageToBot(Data(
             "message",
             "chat",
-            Message(
-                "at",
-                Player(
+            Json.encodeToJsonElement(Chat(
+                Json.encodeToJsonElement(Player(
                     sender.name,
                     Main.instance.server.getPlayerUniqueId(sender.name).toString()
-                ),
-                args.drop(2).joinToString(" "),
-                args[1].toLong()
-            )
-        )
-
-        Main.sendMessageToBot(Json.encodeToString(sendData))
+                )),
+                Message(
+                    null,
+                    listOf(
+                        Content(
+                            "at",
+                            args[1].toLong(),
+                            null,
+                        ),
+                        Content(
+                            "text",
+                            null,
+                            args[2]
+                        )
+                    )
+                )
+            ))
+        ))
 
         return true
     }
@@ -139,21 +147,31 @@ class CommandExecutor : CommandExecutor {
             return true
         }
 
-        val sendData = SendData(
+        Main.sendMessageToBot(Data(
             "message",
             "chat",
-            Message(
-                "reply",
-                Player(
+            Json.encodeToJsonElement(Chat(
+                Json.encodeToJsonElement(Player(
                     sender.name,
                     Main.instance.server.getPlayerUniqueId(sender.name).toString()
-                ),
-                args.drop(2).joinToString(" "),
-                args[1].toLong()
-            )
-        )
-
-        Main.sendMessageToBot(Json.encodeToString(sendData))
+                )),
+                Message(
+                    null,
+                    listOf(
+                        Content(
+                            "reply",
+                            args[1].toLong(),
+                            null,
+                        ),
+                        Content(
+                            "text",
+                            null,
+                            args[2]
+                        )
+                    )
+                )
+            ))
+        ))
 
         return true
     }

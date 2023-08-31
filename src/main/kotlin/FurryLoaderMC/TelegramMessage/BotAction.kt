@@ -1,38 +1,30 @@
 package FurryLoaderMC.TelegramMessage
 
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
 
 
 class BotAction {
 
     fun onMessage(message: String) {
-        val json = Json.parseToJsonElement(message)
-        val channel = json.jsonObject["channel"]?.jsonPrimitive?.content ?: return
-        val event = json.jsonObject["event"]?.jsonPrimitive?.content ?: return
-        val content = json.jsonObject["content"] ?: return
-        when (channel) {
-            "message" -> when (event) {
-                "chat" -> this.sendMessage(content)
+        val data = Json.decodeFromString<Data>(message)
+        when (data.channel) {
+            "message" -> when (data.event) {
+                "chat" -> this.sendMessage(Json.decodeFromJsonElement<Chat>(data.content))
             }
-            "status" -> when (event) {
-                "onlinePlayers" -> this.getOnlinePlayers(channel, event)
+            "status" -> when (data.event) {
+                "onlinePlayers" -> this.getOnlinePlayers()
             }
         }
     }
 
 
-    private fun sendMessage(json: JsonElement) {
-        val telegram = json.jsonObject["telegram"]?.jsonPrimitive?.content ?: return
-        val minecraft = json.jsonObject["minecraft"]?.jsonPrimitive?.content ?: return
-        val message = json.jsonObject["message"]?.jsonPrimitive?.content ?: return
-        val telegramId = json.jsonObject["telegram_id"]?.jsonPrimitive?.long ?: return
-        val messageId = json.jsonObject["message_id"]?.jsonPrimitive?.long ?: return
-        Main.sendMessageToGame(telegram, minecraft, message, telegramId, messageId)
+    private fun sendMessage(chat: Chat) {
+        val sender = Json.decodeFromJsonElement<Sender>(chat.sender)
+        Main.sendMessageToGame(sender, chat.message)
     }
 
 
-    private fun getOnlinePlayers(channel: String, event: String) {
+    private fun getOnlinePlayers() {
         val players = mutableListOf<Player>()
         Main.instance.server.onlinePlayers.forEach {
             val content = Player(
@@ -41,16 +33,15 @@ class BotAction {
             )
             players.add(content)
         }
-        val sendData = SendData(
-            channel,
-            event,
-            OnlinePlayers(
+        Main.sendMessageToBot(Data(
+            "status",
+            "onlinePlayers",
+            Json.encodeToJsonElement(OnlinePlayers(
                 players.size.toLong(),
                 Main.instance.server.maxPlayers.toLong(),
                 players
-            )
-        )
-        Main.sendMessageToBot(Json.encodeToString(sendData))
+            ))
+        ))
     }
 
 }
