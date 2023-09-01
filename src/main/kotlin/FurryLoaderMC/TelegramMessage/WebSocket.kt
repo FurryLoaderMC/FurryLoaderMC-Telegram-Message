@@ -17,12 +17,19 @@ class WebSocket {
 
     private val botAction = BotAction()
     private val sessions = mutableListOf<DefaultWebSocketSession>()
-    private val server = embeddedServer(Netty, port = 4321) {
-        initWebSocket()
+    private var server: NettyApplicationEngine
+
+
+    init {
+        val port = Main.pluginConfig.getInt("websocket.port")
+        val host = Main.pluginConfig.getString("websocket.host")!!
+        this.server = embeddedServer(Netty, port, host) {
+            initWebsocket()
+        }
     }
 
 
-    private fun Application.initWebSocket() {
+    private fun Application.initWebsocket() {
         install(WebSockets)
         install(Routing) {
             webSocket {

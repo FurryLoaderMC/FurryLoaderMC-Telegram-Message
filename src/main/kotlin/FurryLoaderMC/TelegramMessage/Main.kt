@@ -1,6 +1,7 @@
 package FurryLoaderMC.TelegramMessage
 
 import org.bukkit.Bukkit
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 
 
@@ -8,6 +9,7 @@ class Main : JavaPlugin() {
 
     companion object {
 
+        lateinit var pluginConfig: FileConfiguration
         lateinit var instance: JavaPlugin
         lateinit var webSocket: WebSocket
         lateinit var furryLoaderMessage: FurryLoaderMessage
@@ -31,6 +33,7 @@ class Main : JavaPlugin() {
 
 
     override fun onLoad() {
+        pluginConfig = config
         instance = this
         webSocket = WebSocket()
         furryLoaderMessage = FurryLoaderMessage()
@@ -38,6 +41,7 @@ class Main : JavaPlugin() {
 
 
     override fun onEnable() {
+        saveDefaultConfig()
         webSocket.start()
         getCommand("telegram")?.setExecutor(CommandExecutor())
         getCommand("telegram")?.tabCompleter = TabCompleter()
