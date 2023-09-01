@@ -55,7 +55,9 @@ class FurryLoaderMessage {
 
         return Component.join(
             JoinConfiguration.separator(Component.text(" ")),
-            Component.text("[FurryLoader]").color(NamedTextColor.GREEN),
+            Main.pluginConfig.getString("message.prefix")?.let {
+                Component.text(it).color(NamedTextColor.GREEN)
+            } ?: Component.empty() ,
             Component.join(
                 JoinConfiguration.separator(Component.empty()),
                 Component.text("<"),
