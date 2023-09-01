@@ -1,5 +1,5 @@
 name: Telegram-Message
-version: 0.1.0
+version: 1.0.0
 main: FurryLoaderMC.TelegramMessage.Main
 description: FurryLoaderMC - Telegram Message
 author: FurryLoaderMC
@@ -7,4 +7,4 @@ api-version: "1.20"
 commands:
   telegram:
     description: 通过 Bot 发送 / 回复 消息到 Telegram
-    usage: /telegram send | at | reply ...
+    usage: /telegram help | send | at | reply ...
