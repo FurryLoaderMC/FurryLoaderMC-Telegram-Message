@@ -18,10 +18,9 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("io.socket:socket.io-client:2.1.0")
+    implementation("dev.icerock.moko:socket-io:0.4.0")
     compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
-    implementation("io.ktor:ktor-server-core:2.3.3")
-    implementation("io.ktor:ktor-server-netty:2.3.3")
-    implementation("io.ktor:ktor-server-websockets:2.3.3")
 }
 
 

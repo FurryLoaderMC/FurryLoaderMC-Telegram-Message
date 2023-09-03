@@ -7,8 +7,6 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerAdvancementDoneEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import io.papermc.paper.event.player.AsyncChatEvent
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToJsonElement
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 
 
@@ -18,111 +16,101 @@ private val serializer = PlainTextComponentSerializer.plainText()
 class EventListener: Listener {
 
     @EventHandler fun onPlayerJoin(event: PlayerJoinEvent) {
-        Main.sendMessageToBot(Data(
-            "message",
-            "join",
-            Json.encodeToJsonElement(Chat(
-                Json.encodeToJsonElement(Player(
-                    event.player.name,
-                    event.player.uniqueId.toString()
-                )),
-                Message(
+        Main.sendMessageToBot("join" ,Data(
+            Sender(
+                event.player.name,
+                event.player.uniqueId.toString(),
+                null,
+                null
+            ),
+            Message(
+                null,
+                listOf(Content(
+                    "text",
                     null,
-                    listOf(Content(
-                        "text",
-                        null,
-                        serializer.serialize(event.joinMessage() ?: return)
-                    ))
-                )
-            ))
+                    serializer.serialize(event.joinMessage() ?: return)
+                ))
+            )
         ))
     }
 
 
     @EventHandler fun onPlayerQuit(event: PlayerQuitEvent) {
-        Main.sendMessageToBot(Data(
-            "message",
-            "quit",
-            Json.encodeToJsonElement(Chat(
-                Json.encodeToJsonElement(Player(
-                    event.player.name,
-                    event.player.uniqueId.toString()
-                )),
-                Message(
+        Main.sendMessageToBot("quit", Data(
+            Sender(
+                event.player.name,
+                event.player.uniqueId.toString(),
+                null,
+                null
+            ),
+            Message(
+                null,
+                listOf(Content(
+                    "text",
                     null,
-                    listOf(Content(
-                        "text",
-                        null,
-                        serializer.serialize(event.quitMessage() ?: return)
-                    ))
-                )
-            ))
+                    serializer.serialize(event.quitMessage() ?: return)
+                ))
+            )
         ))
     }
 
 
     @EventHandler fun onPlayerDeath(event: PlayerDeathEvent) {
-        Main.sendMessageToBot(Data(
-            "message",
-            "death",
-            Json.encodeToJsonElement(Chat(
-                Json.encodeToJsonElement(Player(
-                    event.player.name,
-                    event.player.uniqueId.toString()
-                )),
-                Message(
+        Main.sendMessageToBot("death", Data(
+            Sender(
+                event.player.name,
+                event.player.uniqueId.toString(),
+                null,
+                null
+            ),
+            Message(
+                null,
+                listOf(Content(
+                    "text",
                     null,
-                    listOf(Content(
-                        "text",
-                        null,
-                        serializer.serialize(event.deathMessage() ?: return)
-                    ))
-                )
-            ))
+                    serializer.serialize(event.deathMessage() ?: return)
+                ))
+            )
         ))
     }
 
 
     @EventHandler fun onPlayerChat(event: AsyncChatEvent) {
-        Main.sendMessageToBot(Data(
-            "message",
-            "chat",
-            Json.encodeToJsonElement(Chat(
-                Json.encodeToJsonElement(Player(
-                    event.player.name,
-                    event.player.uniqueId.toString()
-                )),
-                Message(
+        Main.sendMessageToBot("chat", Data(
+            Sender(
+                event.player.name,
+                event.player.uniqueId.toString(),
+                null,
+                null
+            ),
+            Message(
+                null,
+                listOf(Content(
+                    "text",
                     null,
-                    listOf(Content(
-                        "text",
-                        null,
-                        serializer.serialize(event.originalMessage())
-                    ))
-                )
-            ))
+                    serializer.serialize(event.originalMessage())
+                ))
+            )
         ))
     }
 
 
     @EventHandler fun onPlayerAdvancementDone(event: PlayerAdvancementDoneEvent) {
-        Main.sendMessageToBot(Data(
-            "message",
-            "advancement",
-            Json.encodeToJsonElement(Chat(
-                Json.encodeToJsonElement(Player(
-                    event.player.name,
-                    event.player.uniqueId.toString()
-                )),
-                Message(
+        Main.sendMessageToBot("advancement", Data(
+            Sender(
+                event.player.name,
+                event.player.uniqueId.toString(),
+                null,
+                null
+            ),
+            Message(
+                null,
+                listOf(Content(
+                    "text",
                     null,
-                    listOf(Content(
-                        "text",
-                        null,
-                        serializer.serialize(event.message() ?: return)
-                    ))
-                )
-            ))
+                    serializer.serialize(event.message() ?: return)
+                ))
+            )
         ))
     }
 

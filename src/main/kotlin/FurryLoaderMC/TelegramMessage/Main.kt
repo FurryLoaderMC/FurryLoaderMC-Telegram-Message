@@ -1,5 +1,7 @@
 package FurryLoaderMC.TelegramMessage
 
+import FurryLoaderMC.TelegramMessage.Command.Executor
+import FurryLoaderMC.TelegramMessage.Command.Completer
 import org.bukkit.Bukkit
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.plugin.java.JavaPlugin
@@ -11,17 +13,17 @@ class Main : JavaPlugin() {
 
         lateinit var pluginConfig: FileConfiguration
         lateinit var instance: JavaPlugin
-        lateinit var webSocket: WebSocket
+        lateinit var socketIO: SocketIO
         lateinit var furryLoaderMessage: FurryLoaderMessage
 
 
-        fun sendMessageToGame(sender: Sender, message: Message) {
-            this.furryLoaderMessage.sendMessage(sender, message)
+        fun sendMessageToGame(data: Data) {
+            this.furryLoaderMessage.sendMessage(data)
         }
 
 
-        fun sendMessageToBot(data: Data) {
-            this.webSocket.sendMessage(data)
+        fun sendMessageToBot(event: String, data: Data) {
+            this.socketIO.sendMessage(event, data)
         }
 
 
@@ -35,22 +37,22 @@ class Main : JavaPlugin() {
     override fun onLoad() {
         pluginConfig = config
         instance = this
-        webSocket = WebSocket()
+        socketIO = SocketIO()
         furryLoaderMessage = FurryLoaderMessage()
     }
 
 
     override fun onEnable() {
         saveDefaultConfig()
-        webSocket.start()
-        getCommand("telegram")?.setExecutor(CommandExecutor())
-        getCommand("telegram")?.tabCompleter = TabCompleter()
+        getCommand("telegram")?.setExecutor(Executor())
+        getCommand("telegram")?.tabCompleter = Completer()
         Bukkit.getPluginManager().registerEvents(EventListener(), this)
+        socketIO.connect()
     }
 
 
     override fun onDisable() {
-        webSocket.stop()
+        socketIO.disconnect()
     }
 
 }

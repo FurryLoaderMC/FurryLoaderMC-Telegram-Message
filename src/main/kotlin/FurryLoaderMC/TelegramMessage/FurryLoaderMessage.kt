@@ -9,20 +9,20 @@ import net.kyori.adventure.text.format.NamedTextColor
 
 class FurryLoaderMessage {
 
-    fun sendMessage(sender: Sender, message: Message) {
+    fun sendMessage(data: Data) {
         val typeComponents = mutableListOf<Component>()
-        message.content.forEach {
+        data.message.content.forEach {
             val typeComponent = this.getTypeComponent(it)
             typeComponents.add(typeComponent)
         }
         typeComponents.add(Component.text(" ")) // 防止单个type下hover只显示整体消息的
-        val componentMessage = this.buildMessage(sender, message, typeComponents)
+        val componentMessage = this.buildMessage(data, typeComponents)
         Main.instance.server.sendMessage(componentMessage)
     }
 
 
-    private fun buildMessage(sender: Sender, message: Message, typeComponents: MutableList<Component>): Component {
-        val nameClick = ClickEvent.suggestCommand("/telegram at ${sender.telegramId} ")
+    private fun buildMessage(data: Data, typeComponents: MutableList<Component>): Component {
+        val nameClick = ClickEvent.suggestCommand("/telegram at ${data.sender.telegramID} ")
         val nameHover = HoverEvent.showText(
             Component.join(
                 JoinConfiguration.separator(Component.newline()),
@@ -30,17 +30,17 @@ class FurryLoaderMessage {
                 Component.join(
                     JoinConfiguration.separator(Component.text(" ")),
                     Component.text("Minecraft Name:").color(NamedTextColor.DARK_PURPLE),
-                    Component.text(sender.minecraftName),
+                    Component.text(data.sender.minecraftName),
                 ),
                 Component.join(
                     JoinConfiguration.separator(Component.text(" ")),
                     Component.text("Telegram ID:").color(NamedTextColor.DARK_PURPLE),
-                    Component.text(sender.telegramId.toString()),
+                    Component.text(data.sender.telegramID.toString()),
                 )
             )
         )
 
-        val contentClick = ClickEvent.suggestCommand("/telegram reply ${message.id} ")
+        val contentClick = ClickEvent.suggestCommand("/telegram reply ${data.message.id} ")
         val contentHover = HoverEvent.showText(
             Component.join(
                 JoinConfiguration.separator(Component.newline()),
@@ -48,7 +48,7 @@ class FurryLoaderMessage {
                 Component.join(
                     JoinConfiguration.separator(Component.text(" ")),
                     Component.text("Message ID:").color(NamedTextColor.DARK_PURPLE),
-                    Component.text(message.id.toString()),
+                    Component.text(data.message.id.toString()),
                 )
             )
         )
@@ -61,7 +61,7 @@ class FurryLoaderMessage {
             Component.join(
                 JoinConfiguration.separator(Component.empty()),
                 Component.text("<"),
-                Component.text(sender.telegramName).clickEvent(nameClick).hoverEvent(nameHover),
+                Component.text(data.sender.telegramName!!).clickEvent(nameClick).hoverEvent(nameHover),
                 Component.text(">")
             ).color(NamedTextColor.AQUA),
             Component.join(

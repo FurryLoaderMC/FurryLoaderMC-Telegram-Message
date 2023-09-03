@@ -1,7 +1,6 @@
-package FurryLoaderMC.TelegramMessage
+package FurryLoaderMC.TelegramMessage.Command
 
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToJsonElement
+import FurryLoaderMC.TelegramMessage.*
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.JoinConfiguration
 import net.kyori.adventure.text.format.NamedTextColor
@@ -10,7 +9,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 
 
-class CommandExecutor : CommandExecutor {
+class Executor : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (args.isEmpty()) {
@@ -82,23 +81,23 @@ class CommandExecutor : CommandExecutor {
             return true
         }
 
-        Main.sendMessageToBot(Data(
-            "message",
-            "chat",
-            Json.encodeToJsonElement(Chat(
-                Json.encodeToJsonElement(Player(
-                    sender.name,
-                    Main.instance.server.getPlayerUniqueId(sender.name).toString()
-                )),
-                Message(
-                    null,
-                    listOf(Content(
+        Main.sendMessageToBot("chat", Data(
+            Sender(
+                sender.name,
+                Main.instance.server.getPlayerUniqueId(sender.name).toString(),
+                null,
+                null
+            ),
+            Message(
+                null,
+                listOf(
+                    Content(
                         "text",
                         null,
                         args[1],
-                    ))
+                    )
                 )
-            ))
+            )
         ))
 
         return true
@@ -111,30 +110,28 @@ class CommandExecutor : CommandExecutor {
             return true
         }
 
-        Main.sendMessageToBot(Data(
-            "message",
-            "chat",
-            Json.encodeToJsonElement(Chat(
-                Json.encodeToJsonElement(Player(
-                    sender.name,
-                    Main.instance.server.getPlayerUniqueId(sender.name).toString()
-                )),
-                Message(
-                    null,
-                    listOf(
-                        Content(
-                            "at",
-                            args[1].toLong(),
-                            null,
-                        ),
-                        Content(
-                            "text",
-                            null,
-                            args[2]
-                        )
+        Main.sendMessageToBot("chat", Data(
+            Sender(
+                sender.name,
+                Main.instance.server.getPlayerUniqueId(sender.name).toString(),
+                null,
+                null
+            ),
+            Message(
+                null,
+                listOf(
+                    Content(
+                        "at",
+                        args[1].toLong(),
+                        null,
+                    ),
+                    Content(
+                        "text",
+                        null,
+                        args[2]
                     )
                 )
-            ))
+            )
         ))
 
         return true
@@ -147,30 +144,28 @@ class CommandExecutor : CommandExecutor {
             return true
         }
 
-        Main.sendMessageToBot(Data(
-            "message",
-            "chat",
-            Json.encodeToJsonElement(Chat(
-                Json.encodeToJsonElement(Player(
-                    sender.name,
-                    Main.instance.server.getPlayerUniqueId(sender.name).toString()
-                )),
-                Message(
-                    null,
-                    listOf(
-                        Content(
-                            "reply",
-                            args[1].toLong(),
-                            null,
-                        ),
-                        Content(
-                            "text",
-                            null,
-                            args[2]
-                        )
+        Main.sendMessageToBot("chat", Data(
+            Sender(
+                sender.name,
+                Main.instance.server.getPlayerUniqueId(sender.name).toString(),
+                null,
+                null
+            ),
+            Message(
+                null,
+                listOf(
+                    Content(
+                        "reply",
+                        args[1].toLong(),
+                        null,
+                    ),
+                    Content(
+                        "text",
+                        null,
+                        args[2]
                     )
                 )
-            ))
+            )
         ))
 
         return true
