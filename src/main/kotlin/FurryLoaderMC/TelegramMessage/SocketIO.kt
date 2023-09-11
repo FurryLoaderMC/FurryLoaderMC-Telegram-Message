@@ -16,15 +16,19 @@ class SocketIO {
             transport = SocketOptions.Transport.WEBSOCKET
         )
     ) {
+
         on(SocketEvent.Connect) {
             Main.outputLoggerInfo("已连接 Socket.io 服务器")
         }
+
         on(SocketEvent.Disconnect) {
             Main.outputLoggerInfo("已断开 Socket.io 服务器")
         }
+
         on(SocketEvent.Error) {
             Main.outputLoggerInfo("与 Socket.io 服务器连接发生错误：${it.message}")
         }
+
         on("chat") {
             Main.sendMessageToGame(Json.decodeFromString(it))
         }
@@ -40,16 +44,12 @@ class SocketIO {
 
 
     fun connect() {
-        if (this.socket.isConnected().not()) {
-            this.socket.connect()
-        }
+        this.socket.connect()
     }
 
 
     fun disconnect() {
-        if (this.socket.isConnected()) {
-            this.socket.disconnect()
-        }
+        this.socket.disconnect()
     }
 
 }

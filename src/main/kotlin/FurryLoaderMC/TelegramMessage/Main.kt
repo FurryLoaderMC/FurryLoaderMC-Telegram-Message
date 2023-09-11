@@ -1,10 +1,9 @@
 package FurryLoaderMC.TelegramMessage
 
-import FurryLoaderMC.TelegramMessage.Command.Executor
-import FurryLoaderMC.TelegramMessage.Command.Completer
-import org.bukkit.Bukkit
-import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.configuration.file.FileConfiguration
+import FurryLoaderMC.TelegramMessage.Command.*
+import FurryLoaderMC.TelegramMessage.Listener.*
 
 
 class Main : JavaPlugin() {
@@ -46,7 +45,11 @@ class Main : JavaPlugin() {
         saveDefaultConfig()
         getCommand("telegram")?.setExecutor(Executor())
         getCommand("telegram")?.tabCompleter = Completer()
-        Bukkit.getPluginManager().registerEvents(EventListener(), this)
+        this.server.pluginManager.registerEvents(PlayerJoinListener(), this)
+        this.server.pluginManager.registerEvents(PlayerQuitListener(), this)
+        this.server.pluginManager.registerEvents(PlayerDeathListener(), this)
+        this.server.pluginManager.registerEvents(PlayerAdvancementDoneListener(), this)
+        this.server.pluginManager.registerEvents(AsyncChatEventListener(), this)
         socketIO.connect()
     }
 
